@@ -1,12 +1,77 @@
-import React from 'react';
-import { GithubContext } from '../context/context';
-import styled from 'styled-components';
-import { GoRepo, GoGist } from 'react-icons/go';
-import { FiUsers, FiUserPlus } from 'react-icons/fi';
+import React, {useContext} from 'react'
+import { GithubContext } from '../context/context'
+import styled from 'styled-components'
+import { GoRepo, GoGist } from 'react-icons/go'
+import { FiUsers, FiUserPlus } from 'react-icons/fi'
 
 const UserInfo = () => {
-  return <h2>user info component</h2>;
-};
+  const { githubUser } = React.useContext(GithubContext)
+  const { public_repos, followers, following, public_gists } = githubUser
+
+  // Checking ang data sa console
+  // const data = React.useContext(GithubContext)
+  // console.log(data)
+  
+  // Checking if the value has been passed | ang 'Value' naa sa context.js <GithubContext.Provider value={'Hello'}>
+  // return <h2>user info component : {data}</h2>
+
+  // Info Items Data
+  const items = [
+    {
+      id: 1,
+      icon: <GoRepo className="icon" />,
+      label: "repos",
+      value: public_repos,
+      color: "pink",
+    },
+    {
+      id: 2,
+      icon: <FiUsers className='icon' />,
+      label: 'followers',
+      value: followers,
+      color: 'green',
+    },
+    {
+      id: 3,
+      icon: <FiUserPlus className='icon' />,
+      label: 'following',
+      value: following,
+      color: 'purple',
+    },
+    {
+      id: 4,
+      icon: <GoGist className='icon' />,
+      label: 'gists',
+      value: public_gists,
+      color: 'yellow',
+    },
+  ]
+
+  return (
+    // Info Wrapper
+    <section className="section">
+      <Wrapper className="section-center">
+        {items.map((item, id)=>{
+          return <Item key={item.id} {...item}></Item>
+        })}
+      </Wrapper>
+    </section>
+  )
+}
+
+// Info Item Layout
+// "icon, label, value, color" expected na properties mo display na gikan sa "const items" na data
+const Item = ({ icon, label, value, color }) => {
+  return (
+    <article className="item">
+      <span className={color}>{icon}</span>
+      <div>
+        <h3>{value}</h3>
+        <p>{label}</p>
+      </div>
+    </article>
+  )
+}
 
 const Wrapper = styled.section`
   display: grid;
@@ -58,6 +123,6 @@ const Wrapper = styled.section`
       color: #f0b429;
     }
   }
-`;
+`
 
-export default UserInfo;
+export default UserInfo
